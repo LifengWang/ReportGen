@@ -9,13 +9,14 @@ import net.lingala.zip4j.exception.ZipException;
  */
 public class ZipUtil {
 
-    public void unzip(String zipFile, String destination) {
+    public String unzip(String zipFile, String destination) {
         try {
             ZipFile zf = new ZipFile(zipFile);
             zf.extractAll(destination);
         } catch (ZipException e) {
             e.printStackTrace();
         }
+        return zipFile;
     }
 
     public void unzip(String zipFile) {
