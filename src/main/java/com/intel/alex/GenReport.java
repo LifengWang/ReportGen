@@ -20,18 +20,18 @@ class GenReport {
         configuration.setDefaultEncoding("utf-8");
     }
 
-    public void createDoc(List<Map<String, String>> queryList, Map<String, String> queryResult) {
+    public void createDoc(List<Map<String, String>> queryList, Map<String, Object> queryResult) {
 //        Map<String, List<Map<String, Object>>> dataMap = new HashMap<String, List<Map<String, Object>>>();
         Map<String, Object> dataMap = new HashMap<String, Object>();
         getData(dataMap, queryList);
-        getBBData(dataMap, queryResult);
+        getQueryTime(dataMap,queryResult);
 //        configuration.setDirectoryForTemplateLoading(new File("/root/workspace/ReportGen/src/main/resources/template"));
         System.out.println(this.getClass().getResource(""));
         configuration.setClassForTemplateLoading(this.getClass(), "/template");
         Template t = null;
         try {
             //input the document template
-            t = configuration.getTemplate("test.ftl");
+            t = configuration.getTemplate("test2.ftl");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,7 +56,7 @@ class GenReport {
 
     }
 
-    private static void getData(Map<String, Object> dataMap, List<Map<String, String>> queryList) {
+    private void getData(Map<String, Object> dataMap, List<Map<String, String>> queryList) {
         List<Map<String, Object>> newsList = new ArrayList<Map<String, Object>>();
         for (int i = 1; i <= 30; i++) {
 //            Map<String, Object> map=new HashMap<String, Object>();
@@ -74,27 +74,13 @@ class GenReport {
         }
     }
 
-    private static void getBBData(Map<String, Object> dataMap, Map<String, String> queryResult) {
 
+    private void getQueryTime(Map<String, Object> dataMap, Map<String, Object> queryResult) {
+//        dataMap = queryResult;
+        dataMap.putAll(queryResult);
     }
 
-//    private void getData(Map dataMap) {
-//        List<Map<String, Object>> newsList=new ArrayList<Map<String, Object>>();
-//        for(int i=1;i<=3;i++){
-//            Map<String, Object> map = new HashMap<String, Object>();
-//            map.put("query",i);
-//            map.put("category", "category"+i);
-//            map.put("category", "category"+i*2);
-//            map.put("category", "category"+i*3);
-//            map.put("default", "default"+i);
-//            map.put("default", "default"+i*2);
-//            map.put("default", "default"+i*3);
-//            map.put("change", "change"+i);
-//            map.put("change", "change"+i*2);
-//            map.put("change", "change"+i*3);
-//            newsList.add(map);
-//        }
-//        dataMap.put("newsList",newsList);
-//    }
+    private void getBBData(){
 
+    }
 }

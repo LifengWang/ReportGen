@@ -10,13 +10,18 @@ import net.lingala.zip4j.exception.ZipException;
 public class ZipUtil {
 
     public String unzip(String zipFile, String destination) {
+        String[] s = zipFile.split("/");
+        String[] s2 = s[s.length - 1].split(".zip");
+        String dir = s2[s2.length - 1];
         try {
             ZipFile zf = new ZipFile(zipFile);
             zf.extractAll(destination);
         } catch (ZipException e) {
             e.printStackTrace();
         }
-        return zipFile;
+        System.out.println(destination + zipFile);
+
+        return destination + "/" + dir;
     }
 
     public void unzip(String zipFile) {
