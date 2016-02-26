@@ -26,10 +26,10 @@ class GenReport {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         getData(dataMap, queryList);
         getQueryTime(dataMap, queryResult);
-//        configuration.setDirectoryForTemplateLoading(new File("/root/workspace/ReportGen/src/main/resources/template"));
-        System.out.println(this.getClass().getResource(""));
-        configuration.setClassForTemplateLoading(this.getClass(), "/template");
-        Template t = null;
+        ClassLoader classLoader = getClass().getClassLoader();
+        configuration.setClassLoaderForTemplateLoading(classLoader,"");
+
+	    Template t = null;
         try {
             //input the document template
             t = configuration.getTemplate("test.ftl");
