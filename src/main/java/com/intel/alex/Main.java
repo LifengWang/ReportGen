@@ -13,8 +13,9 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        String zipFile = "/root/workspace/ReportGen/3tb_s7_hsw_ssd_fair.zip";
-        String destination = "/root/workspace/ReportGen/";
+        //get the BigBench log file and unzip destination from args
+        String zipFile = "/root/workspaces/ReportGen/3tb_s7_hsw_ssd_fair.zip";
+        String destination = "/root/workspaces/ReportGen/";
         ZipUtil zu = new ZipUtil();
         GenReport gr = new GenReport();
         FileUtil fu = new FileUtil(zu.unzip(zipFile, destination));
