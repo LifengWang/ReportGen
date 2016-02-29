@@ -1,10 +1,7 @@
 package com.intel.alex.Utils;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by root on 16-2-17.
@@ -54,6 +51,7 @@ public class FileUtil {
 
     public Map<String, Object> parseQueryResult() {
         Map<String, Object> bbMap = new HashMap<String, Object>();
+        List<Map<String, Object>> queryList = new ArrayList<Map<String, Object>>();
         File timesCSV = new File(logDir + "/run-logs/BigBenchTimes.csv");
         try {
             BufferedReader br = new BufferedReader(new FileReader(timesCSV));
@@ -70,8 +68,12 @@ public class FileUtil {
                     if (s[3].equals("")) {
                         bbMap.put("tpe", s[9]);
                     } else {
-                        bbMap.put(s[3], s[9]);
+                        Map<String, Object> map = new HashMap<String, Object>();
+                        map.put("number", s[3]);
+                        map.put("time", s[9]);
+                        queryList.add(map);
                     }
+                    bbMap.put("queryList", queryList);
                 }
                 if (s[1].equals("THROUGHPUT_TEST_1") && s[3].equals("")) {
                     bbMap.put("tte", s[9]);
@@ -108,8 +110,6 @@ public class FileUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         return bbMap;
     }
 }

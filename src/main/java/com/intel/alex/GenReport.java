@@ -27,17 +27,17 @@ class GenReport {
         getData(dataMap, queryList);
         getQueryTime(dataMap, queryResult);
         ClassLoader classLoader = getClass().getClassLoader();
-        configuration.setClassLoaderForTemplateLoading(classLoader,"");
+        configuration.setClassLoaderForTemplateLoading(classLoader, "");
 
-	    Template t = null;
+        Template t = null;
         try {
             //input the document template
-            t = configuration.getTemplate("test.ftl");
+            t = configuration.getTemplate("test2.ftl");
         } catch (IOException e) {
             e.printStackTrace();
         }
         //output the generated document
-        File outFile = new File("test.doc");
+        File outFile = new File("test2.doc");
         Writer out = null;
         try {
             out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile)));
@@ -58,7 +58,7 @@ class GenReport {
     }
 
     private void getData(Map<String, Object> dataMap, List<Map<String, String>> queryList) {
-        List<Map<String, Object>> newsList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> propertyList = new ArrayList<Map<String, Object>>();
         //write the distinct property set hivesql into the sql file
         Set<String> propertySet = new HashSet<String>();
         for (Map<String, String> map : queryList) {
@@ -90,9 +90,9 @@ class GenReport {
                 map.put("category", key.toString());
                 map.put("default", defaultMap.get(key));
                 map.put("change", propertyMap.get(key));
-                newsList.add(map);
+                propertyList.add(map);
             }
-            dataMap.put("newsList", newsList);
+            dataMap.put("propertyList", propertyList);
         }
     }
 
@@ -141,16 +141,11 @@ class GenReport {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return results;
     }
 
     private void getQueryTime(Map<String, Object> dataMap, Map<String, Object> queryResult) {
-//        dataMap = queryResult;
         dataMap.putAll(queryResult);
     }
 
-    private void getBBData() {
-
-    }
 }

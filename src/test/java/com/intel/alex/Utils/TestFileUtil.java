@@ -10,8 +10,8 @@ import java.util.Map;
  * Created by lifeng on 16-2-25.
  */
 public class TestFileUtil {
-    private FileUtil fu = new FileUtil("/root/workspace/ReportGen/3tb_s7_hsw_ssd_fair");
-    String logDir = "/root/workspace/ReportGen/3tb_s7_hsw_ssd_fair";
+    private FileUtil fu = new FileUtil("/root/workspaces/ReportGen/3tb_s7_hsw_ssd_fair");
+    String logDir = "/root/workspaces/ReportGen/3tb_s7_hsw_ssd_fair";
 
     @Test
     public void testParseQueryResult() throws Exception {
