@@ -148,4 +148,8 @@ class GenReport {
         dataMap.putAll(queryResult);
     }
 
+    private void getDocProperty(Map<String, Object> dataMap, Map<String, Object> docProperty){
+        dataMap.putAll(docProperty);
+    }
+
 }
