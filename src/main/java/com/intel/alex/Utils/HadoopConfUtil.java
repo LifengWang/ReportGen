@@ -55,21 +55,21 @@ public class HadoopConfUtil {
             hiveEnvReader=new BufferedReader(new FileReader(hiveEnvFile));
             String hadoopline,hiveline;
             while((hadoopline=hadoopEnvReader.readLine())!=null){
-                if(hadoopline.contains("export YARN_OPTS=")){
+                if(hadoopline.charAt(0)!='#'&& hadoopline.contains("export YARN_OPTS=")){
                     hadoopEnv=hadoopline;
                     break;
                 }
 
             }
             while((hiveline=hiveEnvReader.readLine())!=null){
-                if(hiveline.contains("export HADOOP_CLIENT_OPTS=")){
+                if(hiveline.charAt(0)!='#'&& hiveline.contains("export HADOOP_CLIENT_OPTS=")){
                     hiveEnv=hiveline;
                     break;
                 }
 
             }
-            dataMap.put("yarnopts",getOptsGval(hadoopEnv.split(" ")[2].substring(4)));
-            dataMap.put("hiveopts",getOptsGval(hiveEnv.split(" ")[2].substring(4)));
+            dataMap.put("yarnopts",getOptsGval(getXmxVal(hadoopEnv,"-Xmx")));
+            dataMap.put("hiveopts",getOptsGval(getXmxVal(hiveEnv,"-Xmx")));
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){
@@ -88,6 +88,17 @@ public class HadoopConfUtil {
         }
 
 
+    }
+    private String getXmxVal(String line,String parttern){
+        String[] res=line.split("=");
+        String vals=res[1].substring(1,res[1].length()-1);
+        String[] param=vals.split(" ");
+        for(String s:param){
+            if(s.contains(parttern)){
+                return s.substring(4);
+            }
+        }
+        return null;
     }
     private  String getOptsGval(String value){
         DecimalFormat df = new DecimalFormat("##.##");
