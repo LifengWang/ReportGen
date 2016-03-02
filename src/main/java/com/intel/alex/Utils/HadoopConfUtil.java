@@ -35,34 +35,34 @@ public class HadoopConfUtil {
             conf.addResource(yarnIn);
             conf.addResource(mapredIn);
 
-            for(int i=0;i<confArray.length;i++)
-                if(i==2||i==4||i==10)
-                    dataMap.put(paramArray[i],conf.get(confArray[i]));
-                else if(i==8||i==9){
-                    String[] res=conf.get(confArray[i]).split(" ");
-                    for(String s:res){
-                        if(s.contains("-Xmx")){
-                            dataMap.put(paramArray[i],getOptsGval(s.substring(4)));
+            for(int i=0;i<confArray.length;i++) {
+                if (i == 2 || i == 4 || i == 10)
+                    dataMap.put(paramArray[i], conf.get(confArray[i]));
+                else if (i == 8 || i == 9) {
+                    String[] res = conf.get(confArray[i]).split(" ");
+                    for (String s : res) {
+                        if (s.contains("-Xmx")) {
+                            dataMap.put(paramArray[i], getOptsGval(s.substring(4)));
                         }
                     }
-                }
-                else{
-                    dataMap.put(paramArray[i],getmbGval(conf.get(confArray[i])));
+                } else {
+                    dataMap.put(paramArray[i], getmbGval(conf.get(confArray[i])));
 
                 }
+            }
             //get configurations from hadoop-env.sh, hive-env.sh
             hadoopEnvReader=new BufferedReader(new FileReader(hadoopEnvFile));
             hiveEnvReader=new BufferedReader(new FileReader(hiveEnvFile));
             String hadoopline,hiveline;
             while((hadoopline=hadoopEnvReader.readLine())!=null){
-                if(hadoopline.charAt(0)!='#'&& hadoopline.contains("export YARN_OPTS=")){
+                if(hadoopline.contains("export YARN_OPTS=")&& hadoopline.charAt(0)!='#'){
                     hadoopEnv=hadoopline;
                     break;
                 }
 
             }
             while((hiveline=hiveEnvReader.readLine())!=null){
-                if(hiveline.charAt(0)!='#'&& hiveline.contains("export HADOOP_CLIENT_OPTS=")){
+                if(hiveline.contains("export HADOOP_CLIENT_OPTS=")&& hiveline.charAt(0)!='#'){
                     hiveEnv=hiveline;
                     break;
                 }
