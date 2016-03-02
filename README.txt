@@ -1,0 +1,1 @@
+Please copy the used yarn-site.xml in /var/run/cloudera-scm-agent/process/XXX on the nodemanager node to the Project folder.
