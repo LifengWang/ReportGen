@@ -59,5 +59,5 @@ Find out a yarn-NODEMANAGER folder  a latest yarn-site.xml exsits:
 `scp /var/run/cloudera-scm-agent/process/${id}-yarn-NODEMANAGER/yarn-site.xml root@MASTERNODE:$PROJECT_DIR`
 
 # Run
-Package your project before execute the command below.
+Package your project before executing the command below.
 `java -jar ReportGen-1.0-SNAPSHOT.jar "$BIGBENCH_RESULT_ZIPFILE" "$UNZIP_PATH" "$XMLFILE" `
