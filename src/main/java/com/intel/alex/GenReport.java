@@ -1,12 +1,14 @@
 package com.intel.alex;
 
+import com.intel.alex.Utils.DocPropertyUtil;
 import com.intel.alex.Utils.HadoopConfUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import freemarker.template.Version;
+import org.apache.log4j.Logger;
 
 import java.io.*;
-
 import java.util.*;
 
 
@@ -14,12 +16,15 @@ import java.util.*;
  * Created by root on 16-2-16.
  */
 class GenReport {
+    private static final Logger logger = Logger.getLogger(GenReport.class.getName());
     private Configuration configuration = null;
     private static final String sqlFileStr = "hiveSettings.sql";
-    private static HadoopConfUtil hcu=new HadoopConfUtil();
+    private static final HadoopConfUtil hcu = new HadoopConfUtil();
+
     //HadoopConfUtil hcu=new HadoopConfUtil();
     GenReport() {
-        configuration = new Configuration();
+        Version v = new Version("2.3.23");
+        configuration = new Configuration(v);
         configuration.setClassicCompatible(true);
         configuration.setDefaultEncoding("utf-8");
     }
@@ -33,6 +38,7 @@ class GenReport {
         getData(dataMap, queryList);
         getQueryTime(dataMap, queryResult);
         getXMLInfo(dataMap, xmlMap);
+        getDocProperty(dataMap);
         ClassLoader classLoader = getClass().getClassLoader();
         configuration.setClassLoaderForTemplateLoading(classLoader, "");
 
@@ -53,9 +59,11 @@ class GenReport {
         }
 
         try {
+            assert t != null;
             t.process(dataMap, out);
+            assert out != null;
             out.flush();
-            out.close();
+                out.close();
         } catch (TemplateException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -90,13 +98,12 @@ class GenReport {
         for (int i = 1; i <= 30; i++) {
 //            Map<String, Object> map=new HashMap<String, Object>();
             Map<String, String> propertyMap = queryList.get(i - 1);
-            Set<String> keySet = propertyMap.keySet();
-            for (Object key : keySet) {
+            for (Map.Entry<String, String> entry : propertyMap.entrySet()) {
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("query", i);
-                map.put("category", key.toString());
-                map.put("default", defaultMap.get(key));
-                map.put("change", propertyMap.get(key));
+                map.put("category", entry.getKey());
+                map.put("default", defaultMap.get(entry.getKey()));
+                map.put("change", entry.getValue());
                 propertyList.add(map);
             }
             dataMap.put("propertyList", propertyList);
@@ -108,22 +115,26 @@ class GenReport {
         try {
             File sqlFile = new File(sqlFileStr);
             if (sqlFile.exists()) {
-                //System.out.println("file already exists");
-                sqlFile.delete();
-                sqlFile.createNewFile();
+//                System.out.println("file already exists");
+                boolean deleted = sqlFile.delete();
+                boolean created = sqlFile.createNewFile();
+                if (!deleted&&!created){
+                    logger.debug("delete the existed file failed");
+                }
+
             }
 
             fo = new FileOutputStream(sqlFile, true);
             for (String property : propertySet) {
-                StringBuffer sb = new StringBuffer();
-                sb.append("set " + property + ";\n");
-                fo.write(sb.toString().getBytes("utf-8"));
+                fo.write(("set " + property + ";\n").getBytes("utf-8"));
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
-                fo.close();
+                if (fo != null) {
+                    fo.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -141,7 +152,7 @@ class GenReport {
             ProcessBuilder hiveProcessBuilder = new ProcessBuilder(command);
             Process hiveProcess = hiveProcessBuilder.start();
             BufferedReader br = new BufferedReader(new InputStreamReader(hiveProcess.getInputStream()));
-            String data = null;
+            String data;
             while ((data = br.readLine()) != null) {
                 results.add(data);
             }
@@ -155,17 +166,12 @@ class GenReport {
         dataMap.putAll(queryResult);
     }
 
-    private void getDocProperty(Map<String, Object> dataMap, Map<String, Object> docProperty){
-        dataMap.putAll(docProperty);
+    private void getDocProperty(Map<String, Object> dataMap) {
+        DocPropertyUtil dpu = new DocPropertyUtil();
+        dataMap.putAll(dpu.getDocProperty());
     }
 
-    private void getXMLInfo(Map<String, Object> dataMap, Map<String, Object> xmlMap){
+    private void getXMLInfo(Map<String, Object> dataMap, Map<String, Object> xmlMap) {
         dataMap.putAll(xmlMap);
     }
-//
-//    private void getHadoopConf(Map<String, Object> dataMap, Map<String, Object> hadoopConfMap){
-//        dataMap.putAll(hadoopConfMap);
-//    }
-
-
 }

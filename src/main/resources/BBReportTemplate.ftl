@@ -1189,7 +1189,7 @@
 <w:spacing w:line="240" w:lineRule="auto"/>
 </w:pPr>
 <w:r>
-<w:t>2016.2.22</w:t>
+<w:t>${date}</w:t>
 </w:r>
 </w:p>
 </w:tc>

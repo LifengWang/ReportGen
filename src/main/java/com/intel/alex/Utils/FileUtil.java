@@ -1,7 +1,10 @@
 package com.intel.alex.Utils;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by root on 16-2-17.
@@ -34,8 +37,12 @@ public class FileUtil {
                 while ((s = br.readLine()) != null) {
                     if (!s.contains("--") && !s.equals("")) {
                         String s1[] = s.split(" ");
-                        String s2[] = s1[1].split("=");
-                        propertyMap.put(s2[0], s2[1].split(";")[0]);
+                        if (s1.length > 1) {
+                            String s2[] = s1[1].split("=");
+                            if (s2.length > 1) {
+                                propertyMap.put(s2[0], s2[1].split(";")[0]);
+                            }
+                        }
                     }
                 }
                 br.close();

@@ -5,26 +5,21 @@ package com.intel.alex.Utils;
  * Created by root on 16-2-17.
  */
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
 public class XMLUtil {
     private final String xmlDir;
-    public XMLUtil(String xmlDir){
+
+    public XMLUtil(String xmlDir) {
         this.xmlDir = xmlDir;
     }
+
     //public Map<String, Object> parseXMLFile(File xmlFile) throws Exception {
-    public Map<String, Object> parseXMLFile() throws Exception {
+    public Map<String, Object> parseXMLFile() {
 //        String xmlPath = xmlDir + ;
-        File xmlFile = new File(xmlDir + "info_end.xml");
+        File xmlFile = new File(xmlDir + "/info_end.xml");
         Map<String, Object> xmlMap = new HashMap<String, Object>();
         int clusterSize = 0;
         //int i =0;
@@ -124,7 +119,6 @@ public class XMLUtil {
                 }
 
 
-
             }
 //            System.out.println(clusterSize);
             xmlMap.put("ClusterSize", clusterSize);
@@ -137,7 +131,6 @@ public class XMLUtil {
 
     }
 }
-
 
 
 //public class XMLUtil {
