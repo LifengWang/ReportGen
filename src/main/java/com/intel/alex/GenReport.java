@@ -63,7 +63,7 @@ class GenReport {
             t.process(dataMap, out);
             assert out != null;
             out.flush();
-                out.close();
+            out.close();
         } catch (TemplateException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -100,11 +100,13 @@ class GenReport {
             Map<String, String> propertyMap = queryList.get(i - 1);
             for (Map.Entry<String, String> entry : propertyMap.entrySet()) {
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("query", i);
-                map.put("category", entry.getKey());
-                map.put("default", defaultMap.get(entry.getKey()));
-                map.put("change", entry.getValue());
-                propertyList.add(map);
+                if (!defaultMap.get(entry.getKey()).equals(entry.getValue())) {
+                    map.put("query", i);
+                    map.put("category", entry.getKey());
+                    map.put("default", defaultMap.get(entry.getKey()));
+                    map.put("change", entry.getValue());
+                    propertyList.add(map);
+                }
             }
             dataMap.put("propertyList", propertyList);
         }
@@ -118,7 +120,7 @@ class GenReport {
 //                System.out.println("file already exists");
                 boolean deleted = sqlFile.delete();
                 boolean created = sqlFile.createNewFile();
-                if (!deleted&&!created){
+                if (!deleted && !created) {
                     logger.debug("delete the existed file failed");
                 }
 
