@@ -17,12 +17,11 @@ This document is to describe the installation for auto-report tool and usage.
 **Cloudera**
 
 * Developed and tested on Cloudera CDH 5.5.1
-+ 
-* 
+
 
 **Java**
 
-Java 1.8 is required. 64 bit is recommended. A suitable JDK is installed along with Cloudera (if using the parcel installation method)
+Java 1.8 is required. 64 bit is recommended. A suitable JDK is installed along with Cloudera (if using the parcel installation method).
 
 
 **Other necessary system packages**
@@ -39,11 +38,11 @@ Java 1.8 is required. 64 bit is recommended. A suitable JDK is installed along w
 On the SUT, clone the github repository into a folder stored in $PROJECT_DIR:
 
 ```
-export PROJECT_DIR="$HOME" # adapt this to your location
+export PROJECT_DIR="$HOME"     # adapt this to your location
 cd "$PROJECT_DIR"
 git clone https://github.com/LifengWang/ReportGen
 cd "$PROJECT_DIR/scripts"
-sh collect.sh <hosts of your cluster> #e.g. sh collect.sh hsw-node[1-2] hsw-node[4-5] hsw-node[7-7] hsw-node[10-12]
+sh collect.sh <hosts of your cluster>               #e.g. sh collect.sh hsw-node[1-2] hsw-node[4-5] hsw-node[7-7] hsw-node[10-12]
 ```
 
 ## Configuration
@@ -53,11 +52,12 @@ Copy a latest yarn-site.xml from any datanode (/var/run/cloudera-scm-agent/proce
 
 `ssh $DATANODE`
 
-Find out a yarn-NODEMANAGER folder  a latest yarn-site.xml exsits
+Find out a yarn-NODEMANAGER folder  a latest yarn-site.xml exsits:
 
 `ls -t /var/run/cloudera-scm-agent/process/ |grep yarn-NODEMANAGER |sed -n '1p'`
 
 `scp /var/run/cloudera-scm-agent/process/${id}-yarn-NODEMANAGER/yarn-site.xml root@MASTERNODE:$PROJECT_DIR`
 
 # Run
+Package your project before execute the command below.
 `java -jar ReportGen-1.0-SNAPSHOT.jar "$BIGBENCH_RESULT_ZIPFILE" "$UNZIP_PATH" "$XMLFILE" `
