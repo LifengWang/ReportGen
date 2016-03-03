@@ -17,30 +17,34 @@ class GenReport {
     private Configuration configuration = null;
     private static final String sqlFileStr = "hiveSettings.sql";
     private static HadoopConfUtil hcu=new HadoopConfUtil();
+    //HadoopConfUtil hcu=new HadoopConfUtil();
     GenReport() {
         configuration = new Configuration();
         configuration.setClassicCompatible(true);
         configuration.setDefaultEncoding("utf-8");
     }
 
-    public void createDoc(List<Map<String, String>> queryList, Map<String, Object> queryResult) {
+    public void createDoc(List<Map<String, String>> queryList, Map<String, Object> queryResult, Map<String, Object> xmlMap) {
 //        Map<String, List<Map<String, Object>>> dataMap = new HashMap<String, List<Map<String, Object>>>();
         Map<String, Object> dataMap = new HashMap<String, Object>();
+
+//        dataMap.putAll(hcu.getHadoopConfiguration());
         hcu.getHadoopConfiguration(dataMap);
         getData(dataMap, queryList);
         getQueryTime(dataMap, queryResult);
+        getXMLInfo(dataMap, xmlMap);
         ClassLoader classLoader = getClass().getClassLoader();
         configuration.setClassLoaderForTemplateLoading(classLoader, "");
 
         Template t = null;
         try {
             //input the document template
-            t = configuration.getTemplate("test2.ftl");
+            t = configuration.getTemplate("BBReportTemplate.ftl");
         } catch (IOException e) {
             e.printStackTrace();
         }
         //output the generated document
-        File outFile = new File("test2.doc");
+        File outFile = new File("BBReport.doc");
         Writer out = null;
         try {
             out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile)));
@@ -154,5 +158,14 @@ class GenReport {
     private void getDocProperty(Map<String, Object> dataMap, Map<String, Object> docProperty){
         dataMap.putAll(docProperty);
     }
+
+    private void getXMLInfo(Map<String, Object> dataMap, Map<String, Object> xmlMap){
+        dataMap.putAll(xmlMap);
+    }
+//
+//    private void getHadoopConf(Map<String, Object> dataMap, Map<String, Object> hadoopConfMap){
+//        dataMap.putAll(hadoopConfMap);
+//    }
+
 
 }

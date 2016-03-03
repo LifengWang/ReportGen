@@ -8,7 +8,6 @@ import net.lingala.zip4j.exception.ZipException;
  * Created by root on 16-2-19.
  */
 public class ZipUtil {
-
     public String unzip(String zipFile, String destination) {
         String[] s = zipFile.split("/");
         String[] s2 = s[s.length - 1].split(".zip");

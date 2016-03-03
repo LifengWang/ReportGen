@@ -2,6 +2,7 @@ package com.intel.alex.Utils;
 
 import java.io.*;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,12 +21,14 @@ public class HadoopConfUtil {
     private static final File hadoopEnvFile=new File("/etc/hadoop/conf/hadoop-env.sh");
     private static final File hiveEnvFile=new File("/etc/hive/conf/hive-env.sh");
 
+//    public Map<String, Object> getHadoopConfiguration(){
     public void getHadoopConfiguration(Map<String, Object> dataMap){
         org.apache.hadoop.conf.Configuration conf=new org.apache.hadoop.conf.Configuration(true);
+        //Map<String, Object> hadoopConfMap = new HashMap<String, Object>();
         InputStream yarnIn=null;
         InputStream mapredIn=null;
-        BufferedReader hadoopEnvReader=null;
-        BufferedReader hiveEnvReader=null;
+        BufferedReader hadoopEnvReader = null;
+        BufferedReader hiveEnvReader =null;
         String hadoopEnv=null,hiveEnv=null;
         try{
             //get configurations from yarn-site.xml, mapred-site.xml
@@ -52,6 +55,7 @@ public class HadoopConfUtil {
             }
             //get configurations from hadoop-env.sh, hive-env.sh
             hadoopEnvReader=new BufferedReader(new FileReader(hadoopEnvFile));
+//            BufferedReader hadoopEnvReader = new BufferedReader(new FileReader(hadoopEnvFile));
             hiveEnvReader=new BufferedReader(new FileReader(hiveEnvFile));
             String hadoopline,hiveline;
             while((hadoopline=hadoopEnvReader.readLine())!=null){
@@ -86,6 +90,7 @@ public class HadoopConfUtil {
                 e.printStackTrace();
             }
         }
+//        return hadoopConfMap;
 
 
     }
