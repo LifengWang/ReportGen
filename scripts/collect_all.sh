@@ -103,7 +103,7 @@ EOF
 fi
 if [ 0 = $# ]; then
   echo "Usage : sh collect_all.sh HOST[x-y] HOSTz" 
-  echo "e.g. sh collect_new_201603.sh bb-node[1-8] OR sh collect_new_201603.sh bb-node[1-4] bb-node[5-5] bb-node[6-8]"
+  echo "e.g. sh collect_all.sh bb-node[1-8] OR sh collect_all.sh bb-node[1-4] bb-node[5-5] bb-node[6-8]"
   exit
 fi
 rm -rf info.xml
