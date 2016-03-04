@@ -62,4 +62,4 @@ Find out a yarn-NODEMANAGER folder  a latest yarn-site.xml exsits:
 Package your project before executing the command below.
 
 `java -jar ReportGen-1.0-SNAPSHOT.jar "$BIGBENCH_RESULT_ZIPFILE" "$UNZIP_PATH" "$XMLFILE" `
-`java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ /home/ReportGen/scripts/info_end.xml`
+`E.g. java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ /home/ReportGen/scripts/info_end.xml`
