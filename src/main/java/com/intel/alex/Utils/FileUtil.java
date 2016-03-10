@@ -82,6 +82,7 @@ public class FileUtil {
                     }
                     bbMap.put("queryList", queryList);
                 }
+//                if (s[1].equals("THROUGHPUT_TEST_1") && s[3].equals("")) {
                 if (s[1].equals("THROUGHPUT_TEST_1") && s[3].equals("")) {
                     bbMap.put("tte", s[9]);
                 }
@@ -117,6 +118,35 @@ public class FileUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
         return bbMap;
     }
+
+    public Map<String, Object> parseTTResult() {
+        Map<String, Object> ttMap = new HashMap<String, Object>();
+        List<Map<String, Object>> queryList = new ArrayList<Map<String, Object>>();
+        File timesCSV = new File(logDir + "/run-logs/BigBenchTimes.csv");
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(timesCSV));
+            String line;
+//            int stream;
+            while ((line = br.readLine()) != null) {
+                String s[] = line.split(";");
+                if (s.length >3) {
+                    if (s[1].equals("THROUGHPUT_TEST_1") ) {
+                        ttMap.put("tt"+s[2], s[9]);
+                    }
+                }
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ttMap;
+    }
+
+
 }
