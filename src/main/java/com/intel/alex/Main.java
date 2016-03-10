@@ -1,5 +1,6 @@
 package com.intel.alex;
 
+import com.intel.alex.Utils.ExcelUtil;
 import com.intel.alex.Utils.FileUtil;
 import com.intel.alex.Utils.XMLUtil;
 import com.intel.alex.Utils.ZipUtil;
@@ -18,10 +19,15 @@ public class Main {
         GenReport gr = new GenReport();
         ZipUtil zu = new ZipUtil();
         FileUtil fu = new FileUtil(zu.unzip(args[0], args[1]));
+        //System.out.println(zu.unzip(args[0], args[1]));
         XMLUtil xu = new XMLUtil(args[2]);
         List<Map<String, String>> queryList = fu.parseQueryProperty();
         Map<String, Object> queryResult = fu.parseQueryResult();
         Map<String, Object> xmlMap = xu.parseXMLFile();
         gr.createDoc(queryList, queryResult, xmlMap);
+
+        ExcelUtil eu = new ExcelUtil(zu.unzip(args[0], args[1]));
+        eu.csv2Excel();
+
     }
 }
