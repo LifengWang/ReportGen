@@ -27,7 +27,7 @@ public class Main {
         gr.createDoc(queryList, queryResult, xmlMap);
 
         ExcelUtil eu = new ExcelUtil(zu.unzip(args[0], args[1]));
-        eu.csv2Excel();
+        eu.createExcel();
 
     }
 }
