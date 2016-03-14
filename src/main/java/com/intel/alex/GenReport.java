@@ -85,31 +85,34 @@ class GenReport {
         writeSQLFile(propertySet);
         //execHiveSet
         List<String> defaultValues = exeHiveSet();
-        Map<String, String> defaultMap = new HashMap<String, String>();
-        int itr = 0;
-        for (String property : propertySet) {
-            String[] results = defaultValues.get(itr).split("=");
-            if (results.length == 2)
-                defaultMap.put(property, results[1]);
-            else defaultMap.put(property, "N/A");
-            itr++;
+        if (defaultValues != null) {
+            Map<String, String> defaultMap = new HashMap<String, String>();
+            int itr = 0;
+            for (String property : propertySet) {
+                String[] results = defaultValues.get(itr).split("=");
+                if (results.length == 2)
+                    defaultMap.put(property, results[1]);
+                else defaultMap.put(property, "N/A");
+                itr++;
+            }
+
+            for (int i = 1; i <= 30; i++) {
+//            Map<String, Object> map=new HashMap<String, Object>();
+                Map<String, String> propertyMap = queryList.get(i - 1);
+                for (Map.Entry<String, String> entry : propertyMap.entrySet()) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    if (!defaultMap.get(entry.getKey()).equals(entry.getValue())) {
+                        map.put("query", i);
+                        map.put("category", entry.getKey());
+                        map.put("default", defaultMap.get(entry.getKey()));
+                        map.put("change", entry.getValue());
+                        propertyList.add(map);
+                    }
+                }
+                dataMap.put("propertyList", propertyList);
+            }
         }
 
-        for (int i = 1; i <= 30; i++) {
-//            Map<String, Object> map=new HashMap<String, Object>();
-            Map<String, String> propertyMap = queryList.get(i - 1);
-            for (Map.Entry<String, String> entry : propertyMap.entrySet()) {
-                Map<String, Object> map = new HashMap<String, Object>();
-                if (!defaultMap.get(entry.getKey()).equals(entry.getValue())) {
-                    map.put("query", i);
-                    map.put("category", entry.getKey());
-                    map.put("default", defaultMap.get(entry.getKey()));
-                    map.put("change", entry.getValue());
-                    propertyList.add(map);
-                }
-            }
-            dataMap.put("propertyList", propertyList);
-        }
     }
 
     private static void writeSQLFile(Set<String> propertySet) {

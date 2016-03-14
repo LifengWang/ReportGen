@@ -1,15 +1,13 @@
 package com.intel.alex.Utils;
 
 
+import jxl.Sheet;
 import jxl.Workbook;
-import jxl.write.Label;
+import jxl.read.biff.BiffException;
+import jxl.write.*;
 import jxl.write.Number;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 
 /**
  * Created by root on 3/7/16.
@@ -24,17 +22,16 @@ public class ExcelUtil {
     public void createExcel() {
         File excFile = new File("/home/BigBenchTimes.xls");
         if (createRawDataSheet(excFile)) {
-            createBBSheet(excFile);
+            createPhaseSheet(excFile);
             createPowerSheet(excFile);
             createThroughputSheet(excFile);
         }
     }
 
 
-    private boolean createRawDataSheet(File excel) {
+    private boolean createRawDataSheet(File excFile) {
         try {
             WritableWorkbook book;//
-            File excFile = new File("/home/BigBenchTimes.xls");//
             book = Workbook.createWorkbook(excFile);//
             int num = book.getNumberOfSheets();
             WritableSheet sheet = book.createSheet("BigBenchTimes", num);
@@ -80,82 +77,102 @@ public class ExcelUtil {
     }
 
     private void createPowerSheet(File excFile) {
+        try {
+            FileInputStream fin = new FileInputStream(excFile);
+            Workbook wb = Workbook.getWorkbook(fin);
+            WritableWorkbook wwb = Workbook.createWorkbook(excFile, wb);
+            int num = wwb.getNumberOfSheets();
+            Sheet sheet = wwb.getSheet(0);
+            WritableSheet newSheet = wwb.createSheet("PowerTest", num);
+            Label queryNumber = new Label(0, 0, "QueryNumber");
+            Label queryTime = new Label(1, 0, "QueryTime(s)");
+            newSheet.addCell(queryNumber);
+            newSheet.addCell(queryTime);
+            int i = 1;
+            for (int r = 0; r < sheet.getRows(); r++) {
+                if (sheet.getCell(1, r).getContents().equals("POWER_TEST") && !sheet.getCell(3, r).getContents().equals("")) {
+                    Number ints = new Number(0, i, Integer.parseInt(sheet.getCell(3, r).getContents()));
+                    newSheet.addCell(ints);
+                    Number doubles = new Number(1, i, Double.parseDouble(sheet.getCell(9, r).getContents()));
+                    newSheet.addCell(doubles);
+                    i++;
+                }
+            }
+            wwb.write();
+            wwb.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (BiffException e) {
+            e.printStackTrace();
+        } catch (WriteException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createThroughputSheet(File excFile) {
+        try {
+            FileInputStream fin = new FileInputStream(excFile);
+            Workbook wb = Workbook.getWorkbook(fin);
+            WritableWorkbook wwb = Workbook.createWorkbook(excFile, wb);
+            int num = wwb.getNumberOfSheets();
+            Sheet sheet = wwb.getSheet(0);
+            WritableSheet newSheet = wwb.createSheet("Throughput", num);
+            Label queryNumber = new Label(0, 0, "QueryNumber");
+            newSheet.addCell(queryNumber);
+            for(int i =1 ; i<=30;i++){
+                Number queries = new Number(0, i, i);
+                newSheet.addCell(queries);
+            }
+            for (int r = 0; r < sheet.getRows(); r++) {
+                if (sheet.getCell(1, r).getContents().equals("THROUGHPUT_TEST_1") && !sheet.getCell(3, r).getContents().equals("")) {
+                    int stream = Integer.parseInt(sheet.getCell(2, r).getContents());
+                    Label streamNumber = new Label(stream + 1, 0, "Stream" + stream);
+                    newSheet.addCell(streamNumber);
+                    Number doubles = new Number(stream + 1, Integer.parseInt(sheet.getCell(3, r).getContents()), Double.parseDouble(sheet.getCell(9, r).getContents()));
+                    newSheet.addCell(doubles);
+                }
+            }
+            wwb.write();
+            wwb.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (BiffException e) {
+            e.printStackTrace();
+        } catch (WriteException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void createBBSheet(File excFile) {
+    private void createPhaseSheet(File excFile) {
+        try {
+            FileInputStream fin = new FileInputStream(excFile);
+            Workbook wb = Workbook.getWorkbook(fin);
+            WritableWorkbook wwb = Workbook.createWorkbook(excFile, wb);
+            int num = wwb.getNumberOfSheets();
+            Sheet sheet = wwb.getSheet(0);
+            WritableSheet newSheet = wwb.createSheet("PhaseTime", num);
+            Label queryNumber = new Label(0, 0, "Phase");
+            Label queryTime = new Label(1, 0, "ElapsedTimes(s)");
+            newSheet.addCell(queryNumber);
+            newSheet.addCell(queryTime);
+            int i = 1;
+            for (int r = 0; r < sheet.getRows(); r++) {
+                if (sheet.getCell(2, r).getContents().equals("")) {
+                    Label phase = new Label(0, i, (sheet.getCell(1, r).getContents()));
+                    newSheet.addCell(phase);
+                    Number doubles = new Number(1, i, Double.parseDouble(sheet.getCell(9, r).getContents()));
+                    newSheet.addCell(doubles);
+                    i++;
+                }
+            }
+            wwb.write();
+            wwb.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (BiffException e) {
+            e.printStackTrace();
+        } catch (WriteException e) {
+            e.printStackTrace();
+        }
     }
-
-//    public void csv2Excel() {
-//        File csvFile = new File(logDir + "/run-logs/BigBenchTimes.csv");
-//        FileReader fileReader;
-//        try {
-//            WritableWorkbook book;//
-//            File excFile = new File("/home/BigBenchTimes.xls");//
-//            book = Workbook.createWorkbook(excFile);//
-//            int num = book.getNumberOfSheets();
-//            WritableSheet sheet0 = book.createSheet("BigBenchTimes", num);
-//            WritableSheet sheet1 = book.createSheet("PowerTestTime", num + 1); //1 is needed to change
-//            WritableSheet sheet2 = book.createSheet("ThroughPutTestTime_allstreams", num + 2);
-//
-////            String title = getTitle(csvFile);
-//
-//            fileReader = new FileReader(csvFile);
-//            BufferedReader br = new BufferedReader(fileReader);
-//            int i = 0;
-//            int p = 0;
-//            int t = 0;
-//            String line;
-//            while ((line = br.readLine()) != null) {
-//                String s[] = line.split(";");
-//                if (s.length > 3) {
-//                    for (int j = 0; j < s.length; j++) {
-//                        if (i == 0) {
-//                            Label title = new Label(j, i, s[j]);
-//                            sheet0.addCell(title);
-//                        } else if (j == 0 || j == 2 || j == 3 || j == 4 | j == 5 | j == 8) {
-//                            if (s[j] != null && !s[j].equals("")) {
-//                                Number ints = new Number(j, i, Long.parseLong(s[j]));
-//                                sheet0.addCell(ints);
-//                            } else {
-//                                Label label = new Label(j, i, s[j]);
-//                                sheet0.addCell(label);
-//                            }
-//                        } else if (j == 9) {
-//                            Number doubles = new Number(j, i, Double.parseDouble(s[j]));
-//                            sheet0.addCell(doubles);
-//                        } else {
-//                            Label label = new Label(j, i, s[j]);
-//                            sheet0.addCell(label);
-//                        }
-//
-//                    }
-////                    if (s[1].equals("POWER_TEST")) {
-////                        for (int j = 0; j < s.length; j++) {
-////                            Label label = new Label(j, p, s[j]);
-////                            sheet1.addCell(label);
-////                        }
-////                        p++;
-////                    }
-////                    if (s[1].equals("THROUGHPUT_TEST_1")) {
-////                        for (int j = 0; j < s.length; j++) {
-////                            Label label = new Label(j, t, s[j]);
-////                            sheet2.addCell(label);
-////                        }
-////                        t++;
-////                    }
-//                }
-//                i++;
-//            }
-//            br.close();
-//            fileReader.close();
-//            book.write();
-//            book.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-    
 }
