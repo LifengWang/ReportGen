@@ -61,5 +61,16 @@ Find out a yarn-NODEMANAGER folder  a latest yarn-site.xml exsits:
 # Run
 Package your project before executing the command below.
 
-`java -jar ReportGen-1.0-SNAPSHOT.jar "$BIGBENCH_RESULT_ZIPFILE" "$UNZIP_PATH" "$XMLFILE" `
-`E.g. java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ /home/ReportGen/scripts/info_end.xml`
+If you want to generate BigBench report and excel file of elapse time for each query and phrase, choose 'both' as third argument.
+If you only want to generate BigBench report or excel file of elpase time, choose 'doc' or 'xls' as third argument. 
+Running command:
+
+```
+cd $PROJECT_DIR
+java -jar target/ReportGen-1.0-SNAPSHOT.jar "$BIGBENCH_RESULT_ZIPFILE" "$XMLFILE" "GENERATION_TYPE"
+```
+E.g. `java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ReportGen/scripts/info_end.xml doc`
+
+OR `java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ReportGen/scripts/info_end.xml xls`
+
+OR `java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ReportGen/scripts/info_end.xml both`
