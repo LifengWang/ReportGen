@@ -67,6 +67,7 @@ Running command:
 
 ```
 cd $PROJECT_DIR
+mvn clean package
 java -jar target/ReportGen-1.0-SNAPSHOT.jar "$BIGBENCH_RESULT_ZIPFILE" "$XMLFILE" "GENERATION_TYPE"
 ```
 E.g. `java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ReportGen/scripts/info_end.xml doc`
