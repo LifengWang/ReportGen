@@ -20,7 +20,7 @@ public class ExcelUtil {
     }
 
     public void createExcel() {
-        File excFile = new File("/home/BigBenchTimes.xls");
+        File excFile = new File("BigBenchTimes.xls");
         if (createRawDataSheet(excFile)) {
             createPhaseSheet(excFile);
             createPowerSheet(excFile);
