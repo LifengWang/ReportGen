@@ -91,14 +91,17 @@ echo "<jdk>`cat java_v.txt | grep version | awk -F '"' '{print $2}'`</jdk>"
 #python
 echo "<python>`python -V 2>&1 | awk '{print $2}'`</python>"
 #Hadoop/YARN/HDFS
-echo "<Hadoop/YARN/HDFS>`find / -name hadoop-common* |grep SNAPSHOT.jar |grep -v lib |awk -F '-' '{print $5}'`</Hadoop/YARN/HDFS>"
+echo "<Hadoop/YARN/HDFS>`rpm -qa | grep hadoop-yarn | awk -F '-|+' '{print $3}'`</Hadoop/YARN/HDFS>"
 #hive
-echo "<hive>`find / -name hive-common-* |grep parcels |grep jars |awk -F '-' '{print $5}'`</hive>"
+#echo "<hive>`find / -name hive-common-* |grep parcels |grep jars |awk -F '-' '{print $5}'`</hive>"
+echo "<hive>`rpm -qa | grep hive-hbase | awk -F '-|+' '{print $3}'`</hive>"
 #spark
-echo "<spark>`find / -name spark-assembly-*.jar |grep cloudera |grep jars | awk -F '-' '{print $5}'`</spark>"
+#echo "<spark>`find / -name spark-assembly-*.jar |grep cloudera |grep jars | awk -F '-' '{print $5}'`</spark>"
+echo "<spark>`rpm -qa | grep spark-core | awk -F '-|+' '{print $3}'`</spark>"
 #BigBench
 #CDH
-echo "<CDH>`cat /etc/yum.repos.d/cm.repo |grep baseurl |awk -F '/' '{print $11}'`</CDH>"
+#echo "<CDH>`cat /etc/yum.repos.d/cm.repo |grep baseurl |awk -F '/' '{print $11}'`</CDH>"
+echo "<CDH>`rpm -qa | grep hive-hbase | awk -F '-|+' '{print $4}'`</CDH>"
 EOF
 fi
 if [ 0 = $# ]; then
@@ -133,6 +136,6 @@ done
 fi
 done;
 echo "</node-list>" >> info.xml
-echo "The hardware result is stored in [info.xml], please upload this file to analysis system."
+echo "The hardware result is stored in [info_end.xml], please upload this file to analysis system."
 rm -f collect.sh
 grep -v '^$' info.xml > info_end.xml
