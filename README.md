@@ -71,10 +71,10 @@ Running command:
 ```
 cd $PROJECT_DIR
 mvn clean package
-java -jar target/ReportGen-1.0-SNAPSHOT.jar "$BIGBENCH_RESULT_ZIPFILE" "$XMLFILE" "$GENERATION_TYPE"
+java -jar target/ReportGen-1.0-SNAPSHOT.jar "$BIGBENCH_RESULT_ZIPFILE" "$XMLFILE_DIR" "$GENERATION_TYPE"
 ```
-E.g. `java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ReportGen/scripts/info_end.xml doc`
+E.g. `java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ReportGen/scripts/ doc`
 
-OR `java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ReportGen/scripts/info_end.xml xls`
+OR `java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ReportGen/scripts/ xls`
 
-OR `java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ReportGen/scripts/info_end.xml both`
+OR `java -jar target/ReportGen-1.0-SNAPSHOT.jar /home/bb_result.zip /home/ReportGen/scripts/ both`
