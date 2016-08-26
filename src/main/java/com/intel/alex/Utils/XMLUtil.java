@@ -34,9 +34,7 @@ public class XMLUtil {
                 String s[] = line.split("[<>]");
                 if (s[1].equals("node")) {
                     clusterSize++;
-                    //i++;
                     continue;
-//                    System.out.println(s[1]);
                 }
                 if (s[1].equals("platform")) {
                     //i++;
